@@ -66,7 +66,7 @@ Ankieta: https://forms.gle/PKhTacfBoNg7wUS9A
 
  - Wilkinson, L. (2005). The Grammar of Graphics).
  - Cairo, A. (2019). How Charts Lie: Getting Smarter about Visual Information.
- - Wilke, C. (2020). Podstawy wizualizacji danych. Zasady tworzenia atrakcyjnych wykresów.
+ - Wilke, C. (2020). Podstawy wizualizacji danych. Zasady tworzenia atrakcyjnych wykresów. (https://clauswilke.com/dataviz/)
  - [Engebretsen M., Kennedy H. (2020). Data Visualization in Society](https://www.aup.nl/en/book/9789048543137/data-visualization-in-society).
  
 ## Plan spotkań
@@ -167,7 +167,7 @@ Wykresy 3D w **R**: https://github.com/tylermorganwall/rayshader
 
 Inspiracje: [VennGage](https://venngage.com/)
 
-<img src="https://thumbnails-visually.netdna-ssl.com/infographics--the-benefits-of-their-use-online_565c628147e97.jpg" width="300px" class="center">
+<img src="https://i.redd.it/0j6oiz74oy361.jpg" width="300px" class="center">
 
 
 ## Wizualizacje interaktywne
@@ -523,7 +523,9 @@ Zbyt duża ilość informacji na jednym wykresie.
 
 ## Trzeci wymiar
 
-<img src="https://datavizproject.com/wp-content/uploads/2017/08/Sk%C3%A6rmbillede-2017-08-31-kl.-17.21.12.png" width="600px">
+<img src="https://clauswilke.com/dataviz/no_3d_files/figure-html/VA-death-rates-3d-1.png" width="600px">
+
+Source: https://clauswilke.com/dataviz/
 
 ## Wykresy kołowe
 
@@ -595,7 +597,7 @@ Nadmiar stylizacji wykresu może zmniejszać czytelność wykresu.
 
 ## Prostota
 
-<a href="https://www.visualcapitalist.com/wp-content/uploads/2020/03/DeadliestPandemics-Infographic-87.jpg"><img src="https://www.visualcapitalist.com/wp-content/uploads/2020/03/DeadliestPandemics-Infographic-87.jpg" width="700px"></a>
+<a href="https://assets.weforum.org/editor/OidbpPf3QMtt2SvrmNdR4feAAmAiMHhNm59Ak5_7lp0.jpg"><img src="https://assets.weforum.org/editor/OidbpPf3QMtt2SvrmNdR4feAAmAiMHhNm59Ak5_7lp0.jpg" width="700px"></a>
 
 ## Zadanie 2
 
@@ -743,6 +745,18 @@ Inkscape: darmowy i otwarty edytor grafiki wektorowej.
  - [Oficjalny tutorial](https://inkscape.org/en/doc/basic/tutorial-basic.pl.html).
  - [Inkscape w praktyce](https://pl.wikibooks.org/wiki/Inkscape_w_praktyce).
  
+## AI w wizualizacji danych
+
+Tableau: 
+
+ - https://www.tableau.com/products/tableau-ai
+
+NL4DV: 
+
+ - https://nl4dv.github.io/nl4dv/
+
+
+
 ## Ocena wizualizacji danych
 
 VisQual: narzędzie do oceny jakości wizualizacji danych:
@@ -752,15 +766,17 @@ http://visqual.info/
 Więcej o VisQualu:
 
  - https://medium.com/towards-data-science/why-is-this-chart-bad-5f16da298afa
- - https://arxiv.org/abs/2201.08684
+ - VisQualdex: a Comprehensive Guide to Good Data Visualization, Scientific Visualization, 2023, volume 15, number 1, pages 127 - 149, DOI: 10.26583/sv.15.1.11
  
 Autorzy: Jan Sawicki (Politechnika Warszawska), Michał Burdukiewicz.
 
 ## Kontakt
 
-Materiały: https://github.com/michbur/WizualizacjaDanych2022-2023Z
+Materiały: https://github.com/michbur/WizualizacjaDanych2023-2024Z
+
+Riseup: https://pad.riseup.net/p/WWD-tmp
 
 Mail: michalburdukiewicz@gmail.com
 
-Ankieta: https://forms.gle/gqLgZ67pTktxBCyd9
+Ankieta: https://forms.gle/PKhTacfBoNg7wUS9A
 
