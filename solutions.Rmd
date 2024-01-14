@@ -1,0 +1,240 @@
+---
+title: "Przykłady"
+author: "Michał Burdukiewicz"
+date: "25-11-2023"
+output: html_document
+---
+
+<style>
+.main-container {
+max-width: 1800px;
+margin-left: auto;
+margin-right: auto;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, out.width = 1100)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+theme_set(theme_bw(base_size = 8.5))
+```
+
+```{r}
+dat <- read.csv("./data/polish-driver-license.csv") %>% 
+    rename(gender = sex)
+```
+
+Źródło danych: https://github.com/michbur/polish-driver-license
+
+## Rysunek 1
+
+```{r}
+group_by(dat, age, voivodeship) %>% 
+    summarise(mean = mean(count)) %>% 
+    ggplot(aes(x = age, y = mean, fill = voivodeship)) +
+    geom_col() +
+    ggtitle("Przed zmianami")
+
+mutate(dat, age = cut(age, breaks = c(14, 17, 21, 30, 49, max(dat$age)), include.lowest = TRUE)) %>% 
+    group_by(age, voivodeship) %>% 
+    summarise(mean = mean(count)) %>% 
+    ggplot(aes(x = age, y = mean, fill = voivodeship)) +
+    geom_col(position = "dodge") +
+    facet_wrap(~ voivodeship) +
+    ggtitle("Po zmianach") +
+    theme(legend.position = "bottom")
+
+```
+
+Cel: pokazanie średniej liczby osób, które uzyskały prawo jazdy w danym wieku w zależności od województwa.
+
+**Atrybuty:** każde województwo w innym kolorze (bez gradientu), etykiety dla każdego województwa, x-wiek (jako przedział wiekowy), y-średnia
+
+**Geometria:** wykres słupkowy
+
+**Facety:** każdy przedział wiekowy pokazać na oddzielnym wykresie, każdy wykres dla przedziału wiekowego ze wszystkimi województwami
+
+**Statystyki:** oddzielne wykresy dla każdego przedziału wiekowego (przedziały: 14-17, 18-21, 22-30, 31-49, 50+)
+
+
+
+
+
+## Rysunek 2
+
+```{r}
+
+
+group_by(dat, year, age, gender) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = year, y = total, color = age)) +
+    geom_point() +
+    ggtitle("Przed zmianami")
+
+mutate(dat, age = cut(age, breaks = c(min(dat$age), 20, 40, 60, 80, max(dat$age)), include.lowest = TRUE)) %>% 
+    group_by(year, age) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = age, y = total, fill = age)) +
+    geom_col(position = "dodge") +
+    # geom_label(mapping = aes(label = total, y = ifelse(total < 0.25 * max(total), 0.25 * max(total), total/2)), 
+    #            size = 2.4, show.legend = FALSE) +
+    facet_wrap(~ year) +
+    ggtitle("Po zmianach")
+```
+
+Cel: pokazanie liczby osób w danym wieku uzyskujących prawo jazdy w danym roku.
+
+
+**Atrybuty wizualne:**
+ - pojedyncza wizualizacja statyczna
+ - oś "y" - całokowita liczba wydanych praw jazdy, oś "x" - wiek    
+ - kolor: osobne kolory dla słubków reprezentujących te same grupy wiekowe
+
+**Facety:** cztery osobne obrazki, każdy przedstawiający pięc słupków (reprezentujących grupy wiekowe), jeden obrazek dla każego z poszczególnych roczników (2019-2022)
+
+**Geometria:** słupkowy
+
+**Statystyka:** zliczenie w grupach (min - 20, 20 - 40, 40 - 60, 60 - 80, pow. 80)
+
+## Rysunek 3
+
+```{r}
+group_by(dat, month, year, voivodeship) %>% 
+    summarise(total = sum(count)) %>% 
+    filter(voivodeship == "WOJ. MAZOWIECKIE") %>% 
+    ggplot(aes(x = factor(year), y = total)) +
+    geom_boxplot() +
+    scale_x_discrete("Year") +
+    scale_color_discrete("Month") +
+    geom_point(aes(color = factor(month))) +
+    labs(title = "Przed zmianami", subtitle = "Mazowieckie")
+
+group_by(dat, month, year, voivodeship) %>% 
+    summarise(total = sum(count)) %>% 
+    filter(voivodeship == "WOJ. MAZOWIECKIE") %>% 
+    ggplot(aes(x = factor(month), y = total)) +
+    geom_col() +
+    facet_wrap(~ year, ncol = 1) +
+    labs(title = "Po zmianach", subtitle = "Mazowieckie")
+```
+
+Cel: pokazanie zmienności liczby uzyskanych praw jazdy w skali roku w zależności od roku w województwie mazowieckim.
+
+**Opis ogólny:** Rezygnujemy z wykresu pudełkowego i punktowego. Zmieniamy na wykres 4 facetowy (każdy facet pokazuje jeden rok), ułożony horyzontalnie, każdy miesiąc jest osobnym słupkiem (mamy więc 12 słupków)
+
+**Atrybuty:** oś x - miesiące, oś y - suma, takie same skale na osi y, rezygnujemy z koloru
+
+**Geometria:** wykres słupkowy 
+
+**Facety:** 4 facety, każdy pokazuje 1 rok
+
+**Statystyki:** Rezygnujemy ze statystyk: mediany/kwartyli, pozostawiamy tylko zliczenia (sumę praw jazdy w każdym miesiącu w danym roku)
+
+## Rysunek 4
+
+```{r}
+group_by(dat, age, gender) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = age, y = total, color = gender)) +
+    geom_point() +
+    ggtitle("Przed zmianami")
+
+mutate(dat, age = cut(age, breaks = c(min(dat$age), 18, 19, 20, 24, 3L:9*10 - 1, max(dat$age)), include.lowest = TRUE, right = TRUE)) %>% 
+    group_by(age, gender) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = age, y = total, fill = gender)) +
+    geom_col(position = "dodge") +
+    ggtitle("Po zmianach")
+
+
+```
+
+Cel: pokazać zależność liczby uzyskanych praw jazdy w zależności od wieku i płci.
+
+**Opis ogólny:** zrezygnowanie z wykresu punktowego na rzecz wykresu słupkowego, rozróżnienie kolorystyczne na płeć pozostaje niezmienione, ponowne zliczenie uzyskanych praw jazdy dla przedziałów wiekowych. Zmiany te pozwolą poprawić czytelność wykresu.
+
+**Atrybuty:**
+    - oś X opisuje wiek/przedział wiekowy, oś Y - liczbę uzyskanych praw jazdy, kolor słupka jako oznaczenie płci 
+
+**Geometria:**
+    - zmiana z wykresu punktowego na słupkowy, dwa słupki obok siebie (osobne dla płci oznaczone kolorami obecnych kropek), odstępy między słupkami dla różnych przedziałów wiekowych 
+
+**Facety:**
+    - brak,
+
+**Statystyka:**
+    - zliczenie w grupach (osobno: <18, 18, 19, 20-24, 25-30, następne przedziały co 10 lat: 31-40, 41-50, 51-60, 61-70, 71-80, >81).
+
+
+## Rysunek 5
+
+```{r,fig.height=7}
+group_by(dat, month, age) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = month, y = total)) +
+    geom_point() + 
+    facet_wrap(~ age) +
+    theme(axis.text.x = element_text(angle = 90)) +
+    ggtitle("Przed zmianami")
+
+mutate(dat, age = cut(age, breaks = c(min(dat$age), 18, 19, 25, 45, 60, max(dat$age)), include.lowest = TRUE, right = TRUE)) %>% 
+    group_by(age, month) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = month, y = total, fill = age)) +
+    geom_col(position = "dodge") +
+    scale_x_continuous(breaks = 1L:12) +
+    ggtitle("Po zmianach")
+```
+
+Cel: pokazać liczbę praw jazdy uzyskiwanych przez osoby w różnym wieku w zależności od miesiąca.
+
+-> **Atrybuty wizualne:**
+     - X: liczba wydanych praw jazdy
+     - Y: miesiące w roku
+     - słupki poziome z podziałem danych na kategorie wiekowe, wyróżnione kolorami
+     - kategorie wiekowe: do 18 lat, 19-25, 26-45, 46-60, powyżej 61 (do dyskusji, celem podziału jest zwiększenie czytelności wykresu - rozważaliśmy wyróżnienie jedynie 18 i 19 roku życia, połączenie innych lat w kategorie)
+
+-> **Geometrie: **
+    słupki poziome
+
+-> **Fasety:**
+    brak
+			
+-> **Statystyki:**
+    skumulowana suma wydanych praw jazdy
+
+## Rysunek 6
+
+```{r,fig.height=7}
+group_by(dat, year, gender, voivodeship) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = year, y = gender, fill = total)) +
+    geom_tile(color = "black") +
+    facet_wrap(~ voivodeship) +
+    ggtitle("Przed zmianami")
+
+group_by(dat, year, gender, voivodeship) %>% 
+    summarise(total = sum(count)) %>% 
+    ggplot(aes(x = total, y = voivodeship, fill = gender)) +
+    geom_col() +
+    scale_fill_manual(values = c("coral4", "dodgerblue")) +
+    facet_wrap(~ year) +
+    ggtitle("Po zmianach")
+```
+
+Cel: pokazać liczbę uzyskanych praw jazdy dla poszczególnych województw w zależności od płci i roku.
+
+- **Atrybuty:** 
+    ->oś x ilosc wydanych prawo jazdy (jeśli różnice między długością słupków będą zbyt duże, to można zastosowac skalę logarytmiczną)
+    -> oś y województwa
+    -> usunięcie gradientu
+    -> jeden kolor dla kobiet (brązowy) i jeden kolor dla mężczyzn (niebieski), stacked  - uwzględnione w legendzie
+
+- **Geometria: **
+    ->zmiana na wykres słupkowy
+    
+- **Facety:** podział na lata
+    
+- **Statystyka:** zliczenie
