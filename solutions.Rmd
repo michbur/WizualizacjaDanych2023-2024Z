@@ -1,7 +1,7 @@
 ---
-title: "Przykłady"
+title: "Przykłady i rozwiązania"
 author: "Michał Burdukiewicz"
-date: "25-11-2023"
+date: "14-01-2024"
 output: html_document
 ---
 
@@ -40,11 +40,11 @@ group_by(dat, age, voivodeship) %>%
 mutate(dat, age = cut(age, breaks = c(14, 17, 21, 30, 49, max(dat$age)), include.lowest = TRUE)) %>% 
     group_by(age, voivodeship) %>% 
     summarise(mean = mean(count)) %>% 
-    ggplot(aes(x = age, y = mean, fill = voivodeship)) +
+    ggplot(aes(x = voivodeship, y = mean)) +
     geom_col(position = "dodge") +
-    facet_wrap(~ voivodeship) +
+    facet_wrap(~ age, scales = "free_y") +
     ggtitle("Po zmianach") +
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom", axis.text.x = element_text(angle = 90))
 
 ```
 
@@ -78,8 +78,8 @@ mutate(dat, age = cut(age, breaks = c(min(dat$age), 20, 40, 60, 80, max(dat$age)
     summarise(total = sum(count)) %>% 
     ggplot(aes(x = age, y = total, fill = age)) +
     geom_col(position = "dodge") +
-    # geom_label(mapping = aes(label = total, y = ifelse(total < 0.25 * max(total), 0.25 * max(total), total/2)), 
-    #            size = 2.4, show.legend = FALSE) +
+    geom_label(mapping = aes(label = total, y = ifelse(total < 0.25 * max(total), 0.25 * max(total), total/2)),
+               size = 2.4, show.legend = FALSE) +
     facet_wrap(~ year) +
     ggtitle("Po zmianach")
 ```
@@ -185,6 +185,7 @@ mutate(dat, age = cut(age, breaks = c(min(dat$age), 18, 19, 25, 45, 60, max(dat$
     ggplot(aes(x = month, y = total, fill = age)) +
     geom_col(position = "dodge") +
     scale_x_continuous(breaks = 1L:12) +
+    coord_flip() +
     ggtitle("Po zmianach")
 ```
 
